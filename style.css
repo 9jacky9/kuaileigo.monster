@@ -1,0 +1,1202 @@
+/* ===================================================================
+   快雷Go (kuaileigo.monster) - 泰坦电竞与AI性能版样式表
+   设计语言：泰坦核能算力矩阵风 (Titanium Magma Reactor / High-Torque Kinetic)
+   特性：重装机能倒角、熔岩炽橙电浆雷霆、零第三方依赖、移动端响应式
+   =================================================================== */
+
+:root {
+  --titan-bg: #090b0e;
+  --titan-surface: #10141a;
+  --titan-card: #151b24;
+  --titan-card-hover: #1c2431;
+  --titan-border: #232c3b;
+  --titan-magma: #ff5722;
+  --titan-magma-light: #ff7043;
+  --titan-lime: #84cc16;
+  --titan-ember: #f59e0b;
+  --text-titan: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --radius-chamfer: 6px;
+  --max-w: 1200px;
+  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--titan-bg);
+}
+
+body {
+  font-family: var(--font-stack);
+  background-color: var(--titan-bg);
+  color: var(--text-titan);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a:not(.btn-titan), a:not(.btn-titan):visited {
+  color: var(--titan-magma-light);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:not(.btn-titan):hover, a:not(.btn-titan):focus {
+  color: var(--titan-lime);
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+.titan-container {
+  max-width: var(--max-w);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* ================= 泰坦顶部能核状态条 ================= */
+.titan-topbar {
+  background: #05070a;
+  border-bottom: 1px solid #19202c;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  padding: 7px 0;
+}
+
+.titan-topbar-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.titan-core-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titan-core-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--titan-lime);
+  box-shadow: 0 0 10px var(--titan-lime);
+  animation: titanPulse 2s infinite ease-in-out;
+}
+
+@keyframes titanPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.85); }
+}
+
+.titan-topbar-telemetry {
+  color: var(--titan-lime);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ================= 泰坦主导航栏 ================= */
+.titan-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(9, 11, 14, 0.96);
+  border-bottom: 1px solid var(--titan-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.titan-nav-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+/* Logo 造型：泰坦核能雷印 */
+.titan-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titan-logo-svg {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.titan-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.titan-logo-brand {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.titan-logo-brand span {
+  color: var(--titan-magma);
+}
+
+.titan-logo-sub {
+  font-size: 0.6875rem;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.titan-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.titan-nav-link {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  transition: color 0.2s ease;
+  padding: 6px 0;
+}
+
+.titan-nav-link:hover {
+  color: #ffffff;
+}
+
+.titan-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* 按钮规范与文字高清晰度保证 (彻底杜绝 :visited 状态下的低对比度覆盖) */
+.btn-titan,
+a.btn-titan,
+a.btn-titan:link,
+a.btn-titan:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-stack);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  padding: 10px 22px;
+  min-height: 44px;
+  border-radius: var(--radius-chamfer);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-titan-magma,
+a.btn-titan-magma,
+a.btn-titan-magma:link,
+a.btn-titan-magma:visited,
+a.btn-titan-magma:hover,
+a.btn-titan-magma:focus,
+a.btn-titan-magma:active {
+  background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+  color: #ffffff !important;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  border-color: #ff7043;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 16px rgba(255, 87, 34, 0.45);
+}
+
+.btn-titan-magma:hover,
+a.btn-titan-magma:hover {
+  background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
+  color: #ffffff !important;
+  box-shadow: 0 6px 22px rgba(255, 87, 34, 0.65);
+  transform: translateY(-1px);
+}
+
+.btn-titan-lime,
+a.btn-titan-lime,
+a.btn-titan-lime:link,
+a.btn-titan-lime:visited,
+a.btn-titan-lime:hover,
+a.btn-titan-lime:focus,
+a.btn-titan-lime:active {
+  background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+  color: #090b0e !important;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border-color: #a3e635;
+  text-shadow: none;
+  box-shadow: 0 4px 16px rgba(132, 204, 22, 0.4);
+}
+
+.btn-titan-lime:hover,
+a.btn-titan-lime:hover {
+  background: linear-gradient(135deg, #a3e635 0%, #84cc16 100%);
+  color: #090b0e !important;
+  box-shadow: 0 6px 22px rgba(132, 204, 22, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-titan-outline,
+a.btn-titan-outline,
+a.btn-titan-outline:link,
+a.btn-titan-outline:visited {
+  background: transparent;
+  color: #ffffff !important;
+  border-color: #ff7043;
+  font-weight: 700;
+}
+
+.btn-titan-outline:hover,
+a.btn-titan-outline:hover {
+  background: rgba(255, 87, 34, 0.15);
+  border-color: var(--titan-magma-light);
+  color: #ffffff !important;
+}
+
+.btn-titan-lg {
+  padding: 14px 30px;
+  font-size: 1.0625rem;
+  min-height: 50px;
+}
+
+/* 纯CSS原生汉堡切换器 */
+.titan-nav-toggle {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.titan-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  background: rgba(255, 87, 34, 0.08);
+  border: 1px solid var(--titan-border);
+  border-radius: 4px;
+  padding: 8px;
+  transition: all 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.titan-hamburger:hover, .titan-hamburger:active {
+  background: rgba(255, 87, 34, 0.2);
+  border-color: var(--titan-magma);
+}
+
+.titan-hamburger span {
+  width: 22px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.titan-nav-toggle:checked ~ .titan-hamburger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.titan-nav-toggle:checked ~ .titan-hamburger span:nth-child(2) {
+  opacity: 0;
+}
+.titan-nav-toggle:checked ~ .titan-hamburger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.titan-menu-close-btn {
+  display: none;
+}
+
+.titan-mobile-subnav {
+  display: none;
+}
+
+/* ================= Hero 区域：对角重装动力切角分栏 ================= */
+.titan-hero {
+  position: relative;
+  padding: 85px 0 75px;
+  border-bottom: 1px solid var(--titan-border);
+  background: radial-gradient(circle at 75% 35%, rgba(255, 87, 34, 0.14) 0%, rgba(9, 11, 14, 0) 65%);
+}
+
+.titan-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 50px;
+}
+
+.titan-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 87, 34, 0.12);
+  border: 1px solid rgba(255, 112, 67, 0.3);
+  padding: 6px 14px;
+  border-radius: var(--radius-chamfer);
+  font-size: 0.8125rem;
+  color: var(--titan-magma-light);
+  margin-bottom: 22px;
+}
+
+.titan-badge-tag {
+  background: var(--titan-lime);
+  color: #090b0e;
+  font-weight: 800;
+  font-size: 0.6875rem;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.titan-hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.16;
+  letter-spacing: -1px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.titan-title-gradient {
+  background: linear-gradient(135deg, #ff7043 0%, #ff5722 50%, #84cc16 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.titan-hero-desc {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 34px;
+  max-width: 580px;
+}
+
+.titan-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+/* 泰坦遥测仪表板 */
+.titan-hud-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 18px 22px;
+  background: var(--titan-surface);
+  border: 1px solid var(--titan-border);
+  border-left: 3px solid var(--titan-magma);
+  border-radius: var(--radius-chamfer);
+}
+
+.titan-hud-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.titan-hud-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.titan-hud-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.titan-hud-value span {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--titan-lime);
+  margin-left: 2px;
+}
+
+/* 右侧泰坦核能反应堆舞台 */
+.titan-reactor-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titan-reactor-svg {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  filter: drop-shadow(0 0 25px rgba(255, 87, 34, 0.25));
+}
+
+.titan-turbine-spin {
+  transform-origin: 200px 200px;
+  animation: titanReactorSpin 10s linear infinite;
+}
+
+@keyframes titanReactorSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ================= 公共区块头部 ================= */
+.titan-section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--titan-border);
+}
+
+.titan-section-header {
+  text-align: center;
+  max-width: 740px;
+  margin: 0 auto 54px;
+}
+
+.titan-section-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--titan-lime);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.titan-section-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+
+.titan-section-subtitle {
+  font-size: 1.0625rem;
+  color: var(--text-muted);
+}
+
+/* ================= 核心优势卡片组 (4列重装卡片) ================= */
+.titan-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.titan-card-armor {
+  background: var(--titan-surface);
+  border: 1px solid var(--titan-border);
+  border-radius: var(--radius-chamfer);
+  padding: 30px 22px;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.titan-card-armor::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  transition: background 0.25s ease;
+}
+
+.titan-card-armor:hover {
+  background: var(--titan-card-hover);
+  border-color: var(--titan-magma);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(255, 87, 34, 0.15);
+}
+
+.titan-card-armor:hover::before {
+  background: linear-gradient(90deg, var(--titan-magma), var(--titan-lime));
+}
+
+.titan-icon-box {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 87, 34, 0.12);
+  border: 1px solid rgba(255, 112, 67, 0.25);
+  border-radius: var(--radius-chamfer);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.titan-card-tag {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: var(--titan-lime);
+  background: rgba(132, 204, 22, 0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.titan-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.titan-card-desc {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ================= 电竞与AI集群卡片 (3列) ================= */
+.titan-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.titan-card-reactor {
+  background: var(--titan-card);
+  border: 1px solid var(--titan-border);
+  border-radius: var(--radius-chamfer);
+  padding: 32px 26px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.titan-card-reactor:hover {
+  border-color: var(--titan-lime);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(132, 204, 22, 0.12);
+}
+
+.titan-reactor-badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  background: rgba(255, 87, 34, 0.15);
+  color: var(--titan-magma-light);
+  border: 1px solid rgba(255, 112, 67, 0.3);
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+.titan-reactor-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.titan-reactor-desc {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+.titan-reactor-meta {
+  border-top: 1px solid var(--titan-border);
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: var(--titan-lime);
+}
+
+/* ================= 方案价格表 (3列泰坦方案) ================= */
+.titan-price-card {
+  background: var(--titan-surface);
+  border: 1px solid var(--titan-border);
+  border-radius: var(--radius-chamfer);
+  padding: 38px 28px;
+  position: relative;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.titan-price-featured {
+  background: var(--titan-card);
+  border-color: var(--titan-magma);
+  box-shadow: 0 8px 32px rgba(255, 87, 34, 0.22);
+  transform: scale(1.03);
+}
+
+.titan-featured-pill {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ff5722 0%, #84cc16 100%);
+  color: #090b0e;
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 3px 16px;
+  border-radius: 12px;
+  letter-spacing: 1px;
+}
+
+.titan-price-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.titan-price-desc {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+
+.titan-cost-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--titan-border);
+}
+
+.titan-currency {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--titan-magma);
+}
+
+.titan-cost-val {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.titan-period {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+}
+
+.titan-plan-items {
+  list-style: none;
+  margin-bottom: 30px;
+  flex-grow: 1;
+}
+
+.titan-plan-point {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.titan-point-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--titan-lime);
+  flex-shrink: 0;
+}
+
+.titan-action-wrap {
+  margin-top: auto;
+}
+
+.titan-action-wrap .btn-titan {
+  width: 100%;
+}
+
+/* ================= FAQ 疑难解答 (2列) ================= */
+.titan-faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.titan-faq-card {
+  background: var(--titan-surface);
+  border: 1px solid var(--titan-border);
+  border-radius: var(--radius-chamfer);
+  padding: 26px 24px;
+}
+
+.titan-faq-q {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.titan-faq-prefix {
+  color: var(--titan-magma);
+  font-weight: 800;
+}
+
+.titan-faq-a {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  padding-left: 24px;
+}
+
+/* ================= 职业战队与极客口碑 (3列) ================= */
+.titan-review-card {
+  background: var(--titan-surface);
+  border: 1px solid var(--titan-border);
+  border-radius: var(--radius-chamfer);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.titan-review-content {
+  font-size: 0.9375rem;
+  color: var(--text-titan);
+  line-height: 1.68;
+  margin-bottom: 22px;
+}
+
+.titan-review-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--titan-border);
+  padding-top: 14px;
+}
+
+.titan-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-chamfer);
+  background: var(--titan-card);
+  border: 1px solid var(--titan-magma);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9375rem;
+  color: var(--titan-lime);
+}
+
+.titan-reviewer-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.titan-reviewer-title {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* ================= 底部规范 (严格仅4个中文标题链接) ================= */
+.titan-footer {
+  background: #040507;
+  border-top: 1px solid var(--titan-border);
+  padding: 50px 0 35px;
+  text-align: center;
+}
+
+.titan-footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  list-style: none;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.titan-footer-link {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.titan-footer-link:hover {
+  color: var(--titan-magma-light);
+}
+
+.titan-copyright {
+  font-size: 0.8125rem;
+  color: var(--text-dim);
+}
+
+/* ================= 独立子页面通用内容样式 ================= */
+.titan-page-header {
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--titan-border);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 87, 34, 0.15) 0%, rgba(9, 11, 14, 0) 70%);
+  text-align: center;
+}
+
+.titan-page-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.titan-breadcrumb {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+}
+
+.titan-breadcrumb a {
+  color: var(--titan-magma-light);
+}
+
+.titan-page-content {
+  padding: 60px 0 80px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.titan-article-box {
+  background: var(--titan-surface);
+  border: 1px solid var(--titan-border);
+  border-radius: var(--radius-chamfer);
+  padding: 40px 36px;
+  line-height: 1.8;
+}
+
+.titan-article-box h2 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 32px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--titan-border);
+}
+
+.titan-article-box h2:first-child {
+  margin-top: 0;
+}
+
+.titan-article-box h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--titan-lime);
+  margin: 24px 0 12px;
+}
+
+.titan-article-box p {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.titan-article-box a, .titan-article-box a:visited {
+  color: #ff7043;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(255, 112, 67, 0.4);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.titan-article-box a:hover, .titan-article-box a:focus {
+  color: #84cc16;
+  text-decoration-color: #84cc16;
+}
+
+.titan-article-box ul, .titan-article-box ol {
+  margin-bottom: 20px;
+  padding-left: 24px;
+  color: var(--text-muted);
+}
+
+.titan-article-box li {
+  margin-bottom: 8px;
+}
+
+.titan-sitemap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.titan-sitemap-card {
+  background: var(--titan-card);
+  border: 1px solid var(--titan-border);
+  border-radius: var(--radius-chamfer);
+  padding: 22px;
+}
+
+.titan-sitemap-card h3 {
+  color: var(--titan-magma-light);
+  margin-top: 0;
+  margin-bottom: 14px;
+  font-size: 1.1rem;
+}
+
+.titan-sitemap-links {
+  list-style: none;
+  padding: 0;
+}
+
+.titan-sitemap-links li {
+  margin-bottom: 10px;
+}
+
+.titan-sitemap-links a {
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.titan-sitemap-links a:hover {
+  color: #ffffff;
+}
+
+/* ================= 移动端精准响应式 (@media) ================= */
+@media (max-width: 992px) {
+  .titan-nav-wrap {
+    position: static;
+  }
+
+  .titan-hamburger {
+    display: flex;
+  }
+
+  .titan-nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(9, 11, 14, 0.98);
+    border-bottom: 2px solid var(--titan-magma);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85);
+    flex-direction: column;
+    padding: 16px 20px 24px;
+    gap: 8px;
+    display: none;
+    z-index: 9999;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .titan-nav-toggle:checked ~ .titan-nav-menu {
+    display: flex;
+    animation: titanSlideDown 0.25s ease-out forwards;
+  }
+
+  @keyframes titanSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .titan-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--titan-text);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .titan-nav-link:hover, .titan-nav-link:active {
+    background: rgba(255, 87, 34, 0.16);
+    color: var(--titan-magma);
+    border-left-color: var(--titan-magma);
+    padding-left: 20px;
+  }
+
+  .titan-menu-close-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 0.8125rem;
+    color: var(--titan-muted);
+    cursor: pointer;
+    border-radius: 4px;
+    border-top: 1px solid var(--titan-border);
+  }
+
+  .titan-menu-close-btn:hover {
+    color: #ffffff;
+  }
+
+  /* 导航栏全局唯一官方 CTA 按钮：在移动端紧贴汉堡菜单左侧 */
+  .titan-nav-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 12px;
+  }
+
+  .titan-nav-actions .btn-titan {
+    padding: 7px 14px;
+    font-size: 0.8125rem;
+    min-height: 36px;
+  }
+
+  .titan-mobile-subnav {
+    display: block;
+    background: #090b0e;
+    border-bottom: 1px solid var(--titan-border);
+    overflow: hidden;
+  }
+
+  .titan-mobile-subnav-scroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 8px 16px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .titan-mobile-subnav-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .titan-subnav-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--titan-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--titan-border);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .titan-subnav-pill:active, .titan-subnav-pill:hover {
+    background: rgba(255, 87, 34, 0.2);
+    color: #ffffff;
+    border-color: var(--titan-magma);
+  }
+
+  .titan-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .titan-hero-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .titan-hero-actions {
+    justify-content: center;
+  }
+
+  .titan-reactor-stage {
+    order: -1;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .titan-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .titan-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .titan-price-featured {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .titan-hero-title {
+    font-size: 2.25rem;
+  }
+
+  .titan-hud-strip {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .titan-grid-4, .titan-grid-3, .titan-faq-grid, .titan-sitemap-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .titan-hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .titan-hero-actions .btn-titan {
+    width: 100%;
+  }
+
+  .titan-footer-links {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .titan-article-box {
+    padding: 24px 18px;
+  }
+}

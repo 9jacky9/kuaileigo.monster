@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>治理家庭局域网缓冲区膨胀：CAKE与FQ_CoDel主动队列管理实战 - 快雷Go泰坦性能版</title>
+  <meta name="description" content="深入分析满载下载时Ping延迟暴增的缓冲区膨胀（Bufferbloat）本质，详述CAKE与FQ_CoDel算法在软路由中的配置与实战调校。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 顶部状态遥测条 -->
+  <div class="titan-topbar">
+    <div class="titan-container titan-topbar-flex">
+      <div class="titan-core-status">
+        <span class="titan-core-beacon"></span>
+        <span>快雷Go泰坦性能矩阵 · 极客算力工程实验室</span>
+      </div>
+      <div>
+        <a href="index.html" style="color: var(--titan-lime);">返回泰坦版首页 &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 泰坦主导航栏 -->
+  <header class="titan-header">
+    <div class="titan-container titan-nav-wrap">
+      <a href="index.html" class="titan-logo" aria-label="快雷Go首页">
+        <svg class="titan-logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="24,4 42,14 42,34 24,44 6,34 6,14" fill="#151b24" stroke="#ff5722" stroke-width="2"/>
+          <path d="M24 10L16 26H26L20 38L32 22H22L24 10Z" fill="#ff5722" stroke="#84cc16" stroke-width="1.2"/>
+        </svg>
+        <div class="titan-logo-text">
+          <span class="titan-logo-brand">快雷Go</span>
+          <span class="titan-logo-sub">TITAN BENCHMARK</span>
+        </div>
+      </a>
+      
+      <!-- 纯CSS原生汉堡切换器 -->
+      <input type="checkbox" id="titan-toggle" class="titan-nav-toggle" aria-label="展开导航菜单">
+      <label for="titan-toggle" class="titan-hamburger" aria-label="切换主菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+
+      <nav class="titan-nav-menu">
+        <a href="index.html" class="titan-nav-link">泰坦首页</a>
+        <a href="index.html#advantages" class="titan-nav-link">狂暴算力</a>
+        <a href="index.html#esports-ai" class="titan-nav-link">电竞与AI</a>
+        <a href="index.html#pricing" class="titan-nav-link">怪兽方案</a>
+        <a href="index.html#faq" class="titan-nav-link">硬核答辩</a>
+        <a href="titan-press.html" class="titan-nav-link">算力前哨</a>
+        <label for="titan-toggle" class="titan-menu-close-btn">✕ 收起导航菜单</label>
+      </nav>
+
+      <div class="titan-nav-actions">
+        <a href="https://ww012.twilightaff.com/#/?code=A56DH1Af" target="_blank" rel="nofollow" class="btn-titan btn-titan-magma">唤醒核能专线</a>
+      </div>
+    </div>
+    <!-- 移动端专属横向滑动导航条：保证在手机视口下导航菜单始终醒目可见、永不缺失 -->
+    <nav class="titan-mobile-subnav" aria-label="移动端泰坦快速导航">
+      <div class="titan-container titan-mobile-subnav-scroll">
+        <a href="index.html" class="titan-subnav-pill">泰坦首页</a>
+        <a href="index.html#advantages" class="titan-subnav-pill">狂暴算力</a>
+        <a href="index.html#pricing" class="titan-subnav-pill">怪兽方案</a>
+        <a href="index.html#faq" class="titan-subnav-pill">硬核答辩</a>
+        <a href="titan-press.html" class="titan-subnav-pill">算力前哨</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="titan-page-header">
+    <div class="titan-container">
+      <h1 class="titan-page-title">治理家庭局域网缓冲区膨胀：CAKE与FQ_CoDel主动队列管理实战</h1>
+      <div class="titan-breadcrumb">
+        <a href="index.html">首页</a> &gt; <a href="titan-press.html">算力前哨</a> &gt; 正文
+      </div>
+    </div>
+  </div>
+
+  <main class="titan-page-content">
+    <div class="titan-container">
+      <article class="titan-article-box">
+        <div style="font-size: 0.875rem; color: var(--text-dim); margin-bottom: 24px;">
+          作者：吴翰林 · 开源路由系统内核开发者 · 发布日期：2026-03-10 · 分类：网络排队论与主动队列管理
+        </div>
+
+        <p>
+          许多家庭用户与小型工作室经常面临一种令人抓狂的网络冲突场景：当家中有成员在全速下载大文件、Steam更新游戏或上传高清视频素材时，其他正在玩竞技对战游戏的玩家延迟会瞬间从普通的20ms飙升至数百甚至数千毫秒，语音通话断断续续，网页加载陷入假死。而一旦停止下载，网络延迟立即恢复正常。很多人误以为这是“带宽不够用”所致，即使盲目花大价钱将宽带升级到两千兆，卡顿依旧如影随形。这种现象在网络工程学中被称为“缓冲区膨胀”（Bufferbloat）。
+        </p>
+
+        <h2>一、缓冲区膨胀的物理成因：盲目排队的悲剧</h2>
+        <p>
+          为了防止突发流量造成丢包，现代家用路由器、光猫以及宽带接入服务器（BRAS）内部普遍配置了极其庞大的数据包缓冲区（Buffer）。
+        </p>
+        <p>
+          当大流量TCP下载开始时，由于TCP的贪婪拥塞机制会持续推高发送速率直至填满管道，多余的数据包便会在瓶颈节点（通常是家庭光猫的上行或下行接口）的缓冲区中层层排队。普通网络设备采用极其原始的“先进先出”（FIFO）排队策略。当一个几十兆的队列积压了数千个巨型下载包时，游戏玩家发出的毫秒级体积仅几十字节的紧急Tick报文，也必须在漫长的队伍后方苦苦等待数秒才能被转发。这种排队延迟，就是Bufferbloat的万恶之源。
+        </p>
+
+        <h2>二、主动队列管理（AQM）的技术救赎</h2>
+        <p>
+          消灭缓冲区膨胀，不能靠粗暴地限制带宽，而必须在路由器端引入智能的主动队列管理算法。
+        </p>
+
+        <h3>1. FQ_CoDel（Fair Queueing with Controlled Delay）算法</h3>
+        <p>
+          FQ_CoDel将传统的单一队列拆分为多达上千个子队列，并依据五元组哈希将不同应用的数据流隔离到不同的队列中（Fair Queueing）。更重要的是，它通过监控数据包在队列中的“停驻时间”（Sojourn Time），一旦发现排队延迟超过目标阈值（通常为5ms），便主动在队列头部丢弃或标记（ECN）极少量的TCP数据包，迫使大下载流自觉降速，而小体积的游戏与DNS报文几乎零排队秒过。
+        </p>
+
+        <h3>2. CAKE（Common Applications Kept Enhanced）的终极进阶</h3>
+        <p>
+          CAKE是FQ_CoDel的集大成者。它不仅将流隔离提升到按内网主机IP（Per-Host）与按流（Per-Flow）的双层哈希体系，有效防止单一内网设备霸占全屋带宽，更内置了极其精准的物理链路层开销补偿（Framing Overhead），能够根据PPPoE、以太网协议头自动计算精确载荷，无需繁琐人工计算。
+        </p>
+
+        <h2>三、家庭软路由与骨干加速专网的协同治理</h2>
+        <p>
+          在OpenWrt、iStoreOS或RouterOS软路由上部署CAKE队列非常直接：
+        </p>
+        <p>
+          将接口上传与下载带宽设定为物理线路实际测速峰值的90%至95%，将排队的主导权从运营商劣质光猫硬抢回高性能软路由掌控中。在开启CAKE后，全速压测下载时的Ping时延增量（Latency Under Load）将被彻底抹平至区区1-2毫秒以内。
+        </p>
+        <p>
+          在搭建家庭高速网络系统时，不仅局域网内部需要治理排队延迟，外部中继链路的吞吐韧性同样关键。若想选配既具备超大带宽承载力、又不易在高峰期发生严重排队拥塞的国际通道，可仔细阅读由资深网络工程师撰写的<a href="https://tizilab.net/" target="_blank">高吞吐大带宽科学上网精选</a>，获取多维度带宽利用率实测深度报告。
+        </p>
+
+        <h3>3. ECN显式拥塞通知的无损流控</h3>
+        <p>
+          开启CAKE的ECN标记功能，路由器无需真正丢弃数据包，而是通过在IP包头打上CE拥塞标记通知终端自动调速，实现真正的“零丢包平滑流控”。
+        </p>
+
+        <h2>四、实操总结</h2>
+        <p>
+          升级带宽治标，治理排队治本。通过在网络入口部署现代AQM算法，方能彻底根除缓冲区膨胀的毒瘤，实现多设备满载运行下依然丝滑如初的畅快网络。
+        </p>
+
+      </article>
+    </div>
+  </main>
+
+  <footer class="titan-footer">
+    <div class="titan-container">
+      <ul class="titan-footer-links">
+        <li><a href="sitemap.html" class="titan-footer-link">网站地图</a></li>
+        <li><a href="about.html" class="titan-footer-link">关于我们</a></li>
+        <li><a href="terms.html" class="titan-footer-link">服务条款</a></li>
+        <li><a href="privacy.html" class="titan-footer-link">隐私政策</a></li>
+      </ul>
+      <div class="titan-copyright">
+        &copy; 2026 快雷Go (KuaiLeiGo.monster) 保留所有权利
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
